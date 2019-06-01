@@ -371,7 +371,7 @@ class AWSVisualizer:
                 self._add_security_group_to_table(instance, group)
 
         for loadbalancer in self.get_loadbalancers_in_vpc(vpc_id):
-            for sg in loadbalancer['SecurityGroups']:
+            for sg in loadbalancer.get('SecurityGroups', []):
                 group = self.get_security_group_by_id(sg)
                 self._add_security_group_to_table(loadbalancer, group)
 
