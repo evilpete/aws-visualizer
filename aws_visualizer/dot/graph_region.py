@@ -253,13 +253,13 @@ class AWSVisualizer:
         self.assigned_security_groups = {}
         for instance in self.instances:
             self.assigned_security_groups[instance] = list(map(
-                lambda g: SecurityGroup(g), instance['SecurityGroups']))
+                lambda g: SecurityGroup(g), instance.get('SecurityGroups', [])))
 
     def load_assigned_lb_security_groups(self):
         self.assigned_lb_security_groups = {}
         for lb in self.loadbalancers:
             self.assigned_lb_security_groups[lb] = list(map(
-                lambda g: self.get_security_group_by_id(g), lb['SecurityGroups']))
+                lambda g: self.get_security_group_by_id(g), lb.get('SecurityGroups', [])))
 
     def get_networks_of_rule_refering_to_external_address(self, vpc, rule):
         cidrs = rule['IpRanges'] if 'IpRanges' in rule else set()
