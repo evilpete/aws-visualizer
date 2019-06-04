@@ -174,6 +174,8 @@ class AWSVisualizer:
         self.ips = {}
         self.exclude_security_groups = set()
         self.ArnToAssume = None
+        self.group_pair_in_table = []
+        self.group_targ_in_table = []
 
     def connect(self):
 
@@ -339,6 +341,11 @@ class AWSVisualizer:
         if group['GroupId'] in self.exclude_security_groups:
             return
 
+        tpair = (str(target), group['GroupId'])
+        if tpair in self.group_targ_in_table:
+            return
+        self.group_targ_in_table.append(tpair)
+
         for rule in list(map(lambda r: IpPermissions(r), group['IpPermissions'])):
             if 'IpRanges' in rule:
                 for cidr in rule['IpRanges']:
@@ -352,6 +359,11 @@ class AWSVisualizer:
                     if 'PeeringStatus' in group_pairs:
                         # print "skip peered SG", group['GroupId'],  group_pairs['GroupId']
                         continue
+
+                    gpair = (group['GroupId'],  group_pairs['GroupId'])
+                    if gpair in self.group_pair_in_table:
+                        continue
+                    self.group_pair_in_table.append(gpair)
 
                     granted_group_id = self.get_security_group_by_id(group_pairs[
                                                                          'GroupId'])
