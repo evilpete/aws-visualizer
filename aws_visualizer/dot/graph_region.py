@@ -347,6 +347,12 @@ class AWSVisualizer:
 
             if 'UserIdGroupPairs' in rule:
                 for group_pairs in rule['UserIdGroupPairs']:
+
+                    # ignore foreign Security Groups 
+                    if 'PeeringStatus' in group_pairs:
+                        # print "skip peered SG", group['GroupId'],  group_pairs['GroupId']
+                        continue
+
                     granted_group_id = self.get_security_group_by_id(group_pairs[
                                                                          'GroupId'])
                     sources = self.find_instances_with_assigned_security_group(
