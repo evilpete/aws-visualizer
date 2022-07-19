@@ -1,5 +1,13 @@
 aws-dot
+
+---
+
+** Inactive / Archived fork **
+
+----
+
 ==============
+
 A visualizer of the network of security group dependencies in an AWS VPC.
 
 It can generate the following:
